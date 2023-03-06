@@ -36,8 +36,14 @@ public class PeopleResource {
 
     @GET
     @Path("{id}")
-    public Person getByID(@PathParam("id") int id) {
-        return PeopleDAO.getInstance().getByID(id);
+    public Response getByID(@PathParam("id") int id) {
+        Person p = PeopleDAO.getInstance().getByID(id);
+        
+        if (p == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        
+        return Response.ok(p).build();
     }
 
     @POST
