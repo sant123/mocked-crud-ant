@@ -5,24 +5,17 @@
 package com.santi;
 
 import java.util.ArrayList;
+import javax.ejb.Singleton;
 
 /**
  *
  * @author sant821
  */
+@Singleton
 public class PeopleDAO {
 
     private int currentID;
     private final ArrayList<Person> people;
-    static private PeopleDAO singleton;
-
-    public static PeopleDAO getInstance() {
-        if (singleton == null) {
-            singleton = new PeopleDAO();
-        }
-
-        return singleton;
-    }
 
     public PeopleDAO() {
         this.people = new ArrayList<>();

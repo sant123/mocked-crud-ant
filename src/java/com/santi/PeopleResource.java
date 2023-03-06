@@ -5,6 +5,7 @@
 package com.santi;
 
 import java.util.ArrayList;
+import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.DELETE;
@@ -28,16 +29,19 @@ public class PeopleResource {
 
     @Context
     private UriInfo context;
+    
+    @EJB
+    private PeopleDAO peopleDAO;
 
     @GET
     public ArrayList<Person> getAll() {
-        return PeopleDAO.getInstance().getAll();
+        return peopleDAO.getAll();
     }
 
     @GET
     @Path("{id}")
     public Response getByID(@PathParam("id") int id) {
-        Person p = PeopleDAO.getInstance().getByID(id);
+        Person p = peopleDAO.getByID(id);
         
         if (p == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -48,14 +52,14 @@ public class PeopleResource {
 
     @POST
     public Response create(Person p) {
-        PeopleDAO.getInstance().create(p);
+        peopleDAO.create(p);
         return Response.status(Response.Status.CREATED).entity(p).build();
     }
 
     @PUT
     public Response update(Person p) {
         try {
-            PeopleDAO.getInstance().update(p);
+            peopleDAO.update(p);
             return Response.ok(p).build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -66,7 +70,7 @@ public class PeopleResource {
     @Path("{id}")
     public Response destroy(@PathParam("id") int id) {
         try {
-            PeopleDAO.getInstance().destroy(id);
+            peopleDAO.destroy(id);
             return Response.noContent().build();
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_FOUND).build();
